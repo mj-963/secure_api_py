@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "BSD-3-Clause"}
 authors = [
-    {name = "MarcusX Technologies"}
+    {name = "MarcusXTechnologies"}
 ]
 keywords = ["appwrite", "api", "rest", "framework", "functions"]
 classifiers = [
@@ -29,5 +29,6 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MarcusXTechnologies/secure_api_py"
-Repository = "https://github.com/MarcusXTechnologies/secure_api_py"
+Homepage = "https://github.com/mj-963/secure_api_py"
+Repository = "https://github.com/mj-963/secure_api_py"
+Issues = "https://github.com/mj-963/secure_api_py/issues"
