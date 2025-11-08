@@ -1,2 +1,2 @@
-appwrite>=13.2.0
+appwrite
 secure-api-py>=1.0.0
