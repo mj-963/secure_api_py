@@ -156,14 +156,21 @@ class SecureAPI:
         # Return override if set
         if self._body_json_override is not None:
             return self._body_json_override
-        
+
         try:
-            # Use Appwrite's built-in body_json property
-            body_json = self.context.req.body_json
-            if body_json is None:
-                return {}
-            return body_json
-        except Exception:
+            # Try Appwrite's built-in body_json property first
+            if hasattr(self.context.req, 'body_json'):
+                body_json = self.context.req.body_json
+                if body_json is not None:
+                    return body_json
+
+            # Fall back to parsing body_text as JSON
+            body_text = self.context.req.body_text
+            if body_text:
+                return json.loads(body_text)
+
+            return {}
+        except (json.JSONDecodeError, AttributeError, ValueError):
             # Return empty dict if JSON parsing fails
             return {}
     

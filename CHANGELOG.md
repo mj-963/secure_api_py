@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2024-11-09
+
+### Fixed
+- Improved `body_json` property with better error handling
+- Added fallback to parse `body_text` as JSON if `body_json` attribute is not available
+- More robust JSON parsing with proper exception handling
+
 ## [2.0.0] - 2024-11-09
 
 ### BREAKING CHANGES
