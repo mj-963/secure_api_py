@@ -2,12 +2,12 @@
 
 from typing import Optional, List, Dict, Any, Callable
 from appwrite.client import Client
-from appwrite.services.databases import Databases
+from appwrite.services.tables_db import TablesDB
 from appwrite.id import ID
 
 
 class DatabaseManager:
-    """Manager for database operations with flexible database ID management."""
+    """Manager for database operations with flexible database ID management using TablesDB."""
     
     def __init__(self, client: Client, default_database_id: Optional[str] = None):
         """
@@ -17,7 +17,7 @@ class DatabaseManager:
             client: Appwrite client instance
             default_database_id: Optional default database ID to use
         """
-        self.databases = Databases(client)
+        self.tables_db = TablesDB(client)
         self.default_database_id = default_database_id
     
     def _get_database_id(self, database_id: Optional[str] = None) -> str:
@@ -49,13 +49,13 @@ class DatabaseManager:
         document_security: Optional[bool] = None,
         enabled: Optional[bool] = None
     ):
-        """Create a collection."""
-        return self.databases.create_collection(
+        """Create a table (collection)."""
+        return self.tables_db.create_table(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             name=name,
             permissions=permissions,
-            document_security=document_security,
+            row_security=document_security,
             enabled=enabled
         )
     
@@ -65,8 +65,8 @@ class DatabaseManager:
         queries: Optional[List[str]] = None,
         search: Optional[str] = None
     ):
-        """List all collections."""
-        return self.databases.list_collections(
+        """List all tables (collections)."""
+        return self.tables_db.list_tables(
             database_id=self._get_database_id(database_id),
             queries=queries,
             search=search
@@ -77,10 +77,10 @@ class DatabaseManager:
         collection_id: str,
         database_id: Optional[str] = None
     ):
-        """Get a collection."""
-        return self.databases.get_collection(
+        """Get a table (collection)."""
+        return self.tables_db.get_table(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id
+            table_id=collection_id
         )
     
     def update_collection(
@@ -92,13 +92,13 @@ class DatabaseManager:
         document_security: Optional[bool] = None,
         enabled: Optional[bool] = None
     ):
-        """Update a collection."""
-        return self.databases.update_collection(
+        """Update a table (collection)."""
+        return self.tables_db.update_table(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             name=name,
             permissions=permissions,
-            document_security=document_security,
+            row_security=document_security,
             enabled=enabled
         )
     
@@ -107,10 +107,10 @@ class DatabaseManager:
         collection_id: str,
         database_id: Optional[str] = None
     ):
-        """Delete a collection."""
-        return self.databases.delete_collection(
+        """Delete a table (collection)."""
+        return self.tables_db.delete_table(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id
+            table_id=collection_id
         )
     
     def create_document(
@@ -121,11 +121,11 @@ class DatabaseManager:
         document_id: Optional[str] = None,
         permissions: Optional[List[str]] = None
     ):
-        """Create a document."""
-        return self.databases.create_document(
+        """Create a row (document)."""
+        return self.tables_db.create_row(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
-            document_id=document_id or ID.unique(),
+            table_id=collection_id,
+            row_id=document_id or ID.unique(),
             data=data,
             permissions=permissions
         )
@@ -136,10 +136,10 @@ class DatabaseManager:
         database_id: Optional[str] = None,
         queries: Optional[List[str]] = None
     ):
-        """List all documents."""
-        return self.databases.list_documents(
+        """List all rows (documents)."""
+        return self.tables_db.list_rows(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             queries=queries
         )
     
@@ -150,11 +150,11 @@ class DatabaseManager:
         database_id: Optional[str] = None,
         queries: Optional[List[str]] = None
     ):
-        """Get a document."""
-        return self.databases.get_document(
+        """Get a row (document)."""
+        return self.tables_db.get_row(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
-            document_id=document_id,
+            table_id=collection_id,
+            row_id=document_id,
             queries=queries
         )
     
@@ -166,11 +166,11 @@ class DatabaseManager:
         database_id: Optional[str] = None,
         permissions: Optional[List[str]] = None
     ):
-        """Update a document."""
-        return self.databases.update_document(
+        """Update a row (document)."""
+        return self.tables_db.update_row(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
-            document_id=document_id,
+            table_id=collection_id,
+            row_id=document_id,
             data=data,
             permissions=permissions
         )
@@ -181,11 +181,11 @@ class DatabaseManager:
         document_id: str,
         database_id: Optional[str] = None
     ):
-        """Delete a document."""
-        return self.databases.delete_document(
+        """Delete a row (document)."""
+        return self.tables_db.delete_row(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
-            document_id=document_id
+            table_id=collection_id,
+            row_id=document_id
         )
     
     def create_index(
@@ -199,12 +199,12 @@ class DatabaseManager:
         lengths: Optional[List[int]] = None
     ):
         """Create an index."""
-        return self.databases.create_index(
+        return self.tables_db.create_index(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             key=key,
             type=type,
-            attributes=attributes,
+            columns=attributes,
             orders=orders,
             lengths=lengths
         )
@@ -216,9 +216,9 @@ class DatabaseManager:
         queries: Optional[List[str]] = None
     ):
         """List all indexes."""
-        return self.databases.list_indexes(
+        return self.tables_db.list_indexes(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             queries=queries
         )
     
@@ -229,9 +229,9 @@ class DatabaseManager:
         database_id: Optional[str] = None
     ):
         """Get an index."""
-        return self.databases.get_index(
+        return self.tables_db.get_index(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             key=key
         )
     
@@ -242,9 +242,9 @@ class DatabaseManager:
         database_id: Optional[str] = None
     ):
         """Delete an index."""
-        return self.databases.delete_index(
+        return self.tables_db.delete_index(
             database_id=self._get_database_id(database_id),
-            collection_id=collection_id,
+            table_id=collection_id,
             key=key
         )
     
