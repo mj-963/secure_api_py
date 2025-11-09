@@ -148,7 +148,7 @@ class SecureAPI:
     @property
     def body_text(self) -> str:
         """Parse the request body as text."""
-        return self.context.req.body
+        return self.context.req.body_text
     
     @property
     def body_json(self) -> Dict[str, Any]:
@@ -158,10 +158,11 @@ class SecureAPI:
             return self._body_json_override
         
         try:
-            body_text = self.context.req.body
-            if not body_text:
+            # Use Appwrite's built-in body_json property
+            body_json = self.context.req.body_json
+            if body_json is None:
                 return {}
-            return json.loads(body_text)
+            return body_json
         except Exception:
             # Return empty dict if JSON parsing fails
             return {}

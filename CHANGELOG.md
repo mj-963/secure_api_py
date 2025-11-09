@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2024-11-09
+
+### Fixed
+- Fixed `body_text` property to use `context.req.body_text` instead of `context.req.body`
+- Fixed `body_json` property to use Appwrite's built-in `context.req.body_json` instead of manually parsing with `json.loads()`
+- This ensures compatibility with Appwrite's Python SDK API
+
 ## [1.0.0] - 2024-11-08
 
 ### Added
